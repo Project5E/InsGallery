@@ -186,6 +186,7 @@ public class InstagramPreviewContainer extends FrameLayout {
 
 
         mRatioView = new ImageView(context);
+        mRatioView.setVisibility(INVISIBLE);
 
         CombinedDrawable ratiodDrawable = new CombinedDrawable(InstagramUtils.createSimpleSelectorCircleDrawable(ScreenUtils.dip2px(context, 30), 0x88000000, Color.BLACK),
                 context.getResources().getDrawable(R.drawable.discover_telescopic).mutate());
@@ -209,6 +210,7 @@ public class InstagramPreviewContainer extends FrameLayout {
         });
 
         mMultiView = new ImageView(context);
+        mMultiView.setVisibility(INVISIBLE);
 
         CombinedDrawable multiDrawable = new CombinedDrawable(InstagramUtils.createSimpleSelectorCircleDrawable(ScreenUtils.dip2px(context, 30), 0x88000000, Color.BLACK),
                 context.getResources().getDrawable(R.drawable.discover_many).mutate());

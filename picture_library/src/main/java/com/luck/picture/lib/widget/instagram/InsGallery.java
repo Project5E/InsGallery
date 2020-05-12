@@ -186,7 +186,7 @@ public final class InsGallery {
         } else if (currentTheme == THEME_STYLE_DARK_BLUE) {
             mPictureParameterStyle.pictureRightDefaultTextColor = Color.parseColor("#2FA6FF");
         } else {
-            mPictureParameterStyle.pictureRightDefaultTextColor = ContextCompat.getColor(context, R.color.picture_color_1766FF);
+            mPictureParameterStyle.pictureRightDefaultTextColor = ContextCompat.getColor(context, R.color.picture_color_333333);
         }
         // 相册父容器背景色
         if (currentTheme == THEME_STYLE_DARK) {
