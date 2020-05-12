@@ -20,6 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import com.luck.picture.lib.PictureBaseActivity;
 import com.luck.picture.lib.PictureCustomCameraActivity;
 import com.luck.picture.lib.PictureMediaScannerConnection;
@@ -56,13 +63,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 /**
  * @author：luck
@@ -227,7 +227,7 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
         mList.add(new PageGallery(mInstagramGallery));
         PagePhoto pagePhoto = new PagePhoto(this, config);
         mList.add(pagePhoto);
-        mList.add(new PageVideo(pagePhoto));
+//        mList.add(new PageVideo(pagePhoto));
         mInstagramViewPager = new InstagramViewPager(getContext(), mList);
         ((RelativeLayout) container).addView(mInstagramViewPager, params);
 
@@ -256,7 +256,7 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
             }
         });
 
-        mInstagramViewPager.setSkipRange(1);
+//        mInstagramViewPager.setSkipRange(1);
         mInstagramViewPager.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
