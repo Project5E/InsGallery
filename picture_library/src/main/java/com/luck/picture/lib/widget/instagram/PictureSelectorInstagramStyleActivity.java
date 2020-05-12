@@ -169,8 +169,8 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
         mIvArrow = findViewById(R.id.ivArrow);
 
         config.isCamera = false;
-        config.selectionMode = PictureConfig.SINGLE;
-        config.isSingleDirectReturn = true;
+//        config.selectionMode = PictureConfig.SINGLE;
+//        config.isSingleDirectReturn = true;
 //        config.isWithVideoImage = false;
 //        config.maxVideoSelectNum = 1;
         config.aspect_ratio_x = 1;
