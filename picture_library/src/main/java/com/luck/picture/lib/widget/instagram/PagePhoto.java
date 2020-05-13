@@ -22,6 +22,7 @@ public class PagePhoto implements Page {
     private PictureSelectionConfig mConfig;
     private InstagramCameraView mInstagramCameraView;
     private CameraListener mCameraListener;
+    private CropListener mCropListener;
 
     public PagePhoto(PictureBaseActivity parentActivity, PictureSelectionConfig config) {
         this.mParentActivity = parentActivity;
@@ -39,6 +40,9 @@ public class PagePhoto implements Page {
         }
         if (mCameraListener != null) {
             mInstagramCameraView.setCameraListener(mCameraListener);
+        }
+        if (mCameraListener != null) {
+            mInstagramCameraView.setCropListener(mCropListener);
         }
         return mInstagramCameraView;
     }
@@ -120,6 +124,13 @@ public class PagePhoto implements Page {
         mCameraListener = cameraListener;
         if (mInstagramCameraView != null) {
             mInstagramCameraView.setCameraListener(mCameraListener);
+        }
+    }
+
+    public void setCropListener(CropListener cropListener) {
+        mCropListener = cropListener;
+        if (mInstagramCameraView != null) {
+            mInstagramCameraView.setCropListener(cropListener);
         }
     }
 

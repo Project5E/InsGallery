@@ -256,6 +256,13 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
             }
         });
 
+        pagePhoto.setCropListener(new CropListener() {
+            @Override
+            public void onCrop(String originalPath, String mimeType) {
+                startCrop(originalPath, mimeType);
+            }
+        });
+
 //        mInstagramViewPager.setSkipRange(1);
         mInstagramViewPager.setOnPageChangeListener(new OnPageChangeListener() {
             @Override

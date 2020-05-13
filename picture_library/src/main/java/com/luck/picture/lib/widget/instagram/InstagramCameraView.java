@@ -59,6 +59,7 @@ public class InstagramCameraView extends FrameLayout {
     private int mCameraState = STATE_CAPTURE;
     private boolean isFront;
     private CameraListener mCameraListener;
+    private CropListener mCropListener;
     private long mRecordTime = 0;
     private final InstagramCameraEmptyView mCameraEmptyView;
 
@@ -100,7 +101,7 @@ public class InstagramCameraView extends FrameLayout {
                 }
                 mCameraView.setCaptureMode(androidx.camera.view.CameraView.CaptureMode.IMAGE);
                 File imageOutFile = createImageFile();
-                mCameraView.takePicture(imageOutFile, ContextCompat.getMainExecutor(getContext().getApplicationContext()), new OnImageSavedCallbackImpl(InstagramCameraView.this, imageOutFile));
+                mCameraView.takePicture(imageOutFile, ContextCompat.getMainExecutor(getContext().getApplicationContext()), new OnImageSavedCallbackImpl(InstagramCameraView.this, imageOutFile, mCropListener));
             }
 
             @Override
@@ -324,6 +325,10 @@ public class InstagramCameraView extends FrameLayout {
         mCameraListener = cameraListener;
     }
 
+    public void setCropListener(CropListener cropListener) {
+        mCropListener = cropListener;
+    }
+
     public void setEmptyViewVisibility(int visibility) {
         InstagramUtils.setViewVisibility(mCameraEmptyView, visibility);
     }
@@ -353,15 +358,18 @@ public class InstagramCameraView extends FrameLayout {
     private static class OnImageSavedCallbackImpl implements ImageCapture.OnImageSavedCallback {
         private WeakReference<InstagramCameraView> mCameraView;
         private File mImageOutFile;
+        private WeakReference<CropListener> mCropListener;
 
-        OnImageSavedCallbackImpl(InstagramCameraView cameraView, File imageOutFile) {
+        OnImageSavedCallbackImpl(InstagramCameraView cameraView, File imageOutFile, CropListener cropListener) {
             mCameraView = new WeakReference<>(cameraView);
             mImageOutFile = imageOutFile;
+            mCropListener = new WeakReference<>(cropListener);
         }
 
         @Override
         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
             InstagramCameraView cameraView = mCameraView.get();
+            CropListener cropListener = mCropListener.get();
             if (cameraView == null) {
                 return;
             }
@@ -382,6 +390,9 @@ public class InstagramCameraView extends FrameLayout {
             }
             if (mImageOutFile != null && mImageOutFile.exists() && cameraView.mCameraListener != null) {
                 cameraView.mCameraListener.onPictureSuccess(mImageOutFile);
+            }
+            if (cropListener != null) {
+                cropListener.onCrop(cameraView.mConfig.cameraPath, PictureMimeType.MIME_TYPE_IMAGE);
             }
         }
 
