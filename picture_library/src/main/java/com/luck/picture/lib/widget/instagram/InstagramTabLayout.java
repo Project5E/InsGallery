@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -49,7 +50,7 @@ public class InstagramTabLayout extends FrameLayout {
         setWillNotDraw(false);
         selectedIndicatorPaint = new Paint();
         defaultSelectionIndicator = new GradientDrawable();
-        selectedIndicatorHeight = ScreenUtils.dip2px(context, 1);
+        selectedIndicatorHeight = ScreenUtils.dip2px(context, 2);
 
         if (InsGallery.currentTheme == InsGallery.THEME_STYLE_DARK) {
             selectedIndicatorPaint.setColor(ContextCompat.getColor(context, R.color.picture_color_white));
@@ -73,6 +74,7 @@ public class InstagramTabLayout extends FrameLayout {
             } else {
                 tabView.setTextColor(Color.parseColor("#92979F"));
             }
+            tabView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             tabView.setGravity(Gravity.CENTER);
             tabView.setText(titles.get(i));
             addView(tabView);

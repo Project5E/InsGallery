@@ -110,7 +110,7 @@ public final class InsGallery {
                 //.isMultipleRecyclerAnimation(false)// 多图裁剪底部列表显示动画效果
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                .enableCrop(true)// 是否裁剪
+                .enableCrop(false)// 是否裁剪
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .compress(false)// 是否压缩
                 //.compressQuality(80)// 图片压缩后输出质量 0~ 100

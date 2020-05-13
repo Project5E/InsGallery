@@ -14,16 +14,20 @@ import android.view.View;
  * ================================================
  */
 public class InstagramCaptureButton extends View {
-    private static final int PRESS_COLOR = 0xFFAAAAAA;
-    private static final int NORMAL_COLOR = 0xFFDCDCDC;
+    private static final int OUTSIDE_PRESS_COLOR = 0xFFCCCCCC;
+    private static final int OUTSIDE_NORMAL_COLOR = 0xFFEEEEEE;
+    private static final int CENTER_PRESS_COLOR = 0xFFF5DA41;
+    private static final int CENTER_NORMAL_COLOR = 0xFFFDE662;
     private Paint mPaint;
-    private int outsideColor = NORMAL_COLOR;
     private int insideColor = Color.WHITE;
+    private int outsideColor = OUTSIDE_NORMAL_COLOR;
+    private int centerColor = CENTER_NORMAL_COLOR;
     private float center_x;
     private float center_y;
     private float buttonRadius;
     private float buttonOutsideRadius;
     private float buttonInsideRadius;
+    private float buttonCenterRadius;
     private boolean isPress;
 
     public InstagramCaptureButton(Context context) {
@@ -38,7 +42,8 @@ public class InstagramCaptureButton extends View {
         center_y = getMeasuredHeight() / 2f;
         buttonRadius = getMeasuredWidth() / 2f;
         buttonOutsideRadius = buttonRadius;
-        buttonInsideRadius = buttonRadius * 0.65f;
+        buttonInsideRadius = buttonRadius * 0.75f;
+        buttonCenterRadius = buttonRadius * 0.55f;
     }
 
     public void pressButton(boolean isPress) {
@@ -47,9 +52,11 @@ public class InstagramCaptureButton extends View {
         }
         this.isPress = isPress;
         if (isPress) {
-            outsideColor = PRESS_COLOR;
+            outsideColor = OUTSIDE_PRESS_COLOR;
+            centerColor = CENTER_PRESS_COLOR;
         } else {
-            outsideColor = NORMAL_COLOR;
+            outsideColor = OUTSIDE_NORMAL_COLOR;
+            centerColor = CENTER_NORMAL_COLOR;
         }
         invalidate();
     }
@@ -64,5 +71,7 @@ public class InstagramCaptureButton extends View {
         canvas.drawCircle(center_x, center_y, buttonOutsideRadius, mPaint);
         mPaint.setColor(insideColor);
         canvas.drawCircle(center_x, center_y, buttonInsideRadius, mPaint);
+        mPaint.setColor(centerColor);
+        canvas.drawCircle(center_x, center_y, buttonCenterRadius, mPaint);
     }
 }
