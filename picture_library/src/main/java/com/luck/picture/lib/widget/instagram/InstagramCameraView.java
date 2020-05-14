@@ -10,6 +10,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.VideoCapture;
+import androidx.camera.view.CameraView;
+import androidx.core.content.ContextCompat;
+
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.camera.listener.CameraListener;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -25,15 +34,6 @@ import com.luck.picture.lib.tools.StringUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.VideoCapture;
-import androidx.camera.view.CameraView;
-import androidx.core.content.ContextCompat;
 
 /**
  * ================================================
@@ -52,6 +52,7 @@ public class InstagramCameraView extends FrameLayout {
     private PictureSelectionConfig mConfig;
     private WeakReference<AppCompatActivity> mActivity;
     private CameraView mCameraView;
+    private final ImageView mLeftBack;
     private final ImageView mSwitchView;
     private final ImageView mFlashView;
     private InstagramCaptureLayout mCaptureLayout;
@@ -70,6 +71,20 @@ public class InstagramCameraView extends FrameLayout {
 
         mCameraView = new CameraView(context);
         addView(mCameraView);
+
+        mLeftBack = new ImageView(context);
+        int backPadding = ScreenUtils.dip2px(getContext(), 15);
+        mLeftBack.setPadding(backPadding, backPadding, backPadding, backPadding);
+        mLeftBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.onBackPressed();
+            }
+        });
+        if (config.style.pictureLeftBackIcon != 0) {
+            mLeftBack.setImageResource(config.style.pictureLeftBackIcon);
+        }
+        addView(mLeftBack);
 
         mSwitchView = new ImageView(context);
         mSwitchView.setImageResource(R.drawable.discover_flip);
@@ -228,12 +243,14 @@ public class InstagramCameraView extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
+        int cameraHeight = width * mConfig.aspect_ratio_y / mConfig.aspect_ratio_x;
 
-        mCameraView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(width - ScreenUtils.dip2px(getContext(), 2), MeasureSpec.EXACTLY));
-        mCameraEmptyView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(width - ScreenUtils.dip2px(getContext(), 2), MeasureSpec.EXACTLY));
+        mCameraView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(cameraHeight, MeasureSpec.EXACTLY));
+        mCameraEmptyView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(cameraHeight, MeasureSpec.EXACTLY));
+        mLeftBack.measure(MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 48), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 48), MeasureSpec.EXACTLY));
         mSwitchView.measure(MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 32), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 32), MeasureSpec.EXACTLY));
         mFlashView.measure(MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 32), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(ScreenUtils.dip2px(getContext(), 32), MeasureSpec.EXACTLY));
-        mCaptureLayout.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height - width + ScreenUtils.dip2px(getContext(), 2), MeasureSpec.EXACTLY));
+        mCaptureLayout.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height - cameraHeight, MeasureSpec.EXACTLY));
 
         setMeasuredDimension(width, height);
     }
@@ -245,14 +262,16 @@ public class InstagramCameraView extends FrameLayout {
         mCameraView.layout(viewLeft, viewTop, viewLeft + mCameraView.getMeasuredWidth(), viewTop + mCameraView.getMeasuredHeight());
         mCameraEmptyView.layout(viewLeft, viewTop, viewLeft + mCameraView.getMeasuredWidth(), viewTop + mCameraView.getMeasuredHeight());
 
-        viewTop = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 12) - mSwitchView.getMeasuredHeight();
+        mLeftBack.layout(viewLeft, viewTop, viewLeft + mLeftBack.getMeasuredWidth(), viewTop + mLeftBack.getMeasuredHeight());
+
+        viewTop = mCameraView.getMeasuredHeight() - ScreenUtils.dip2px(getContext(), 12) - mSwitchView.getMeasuredHeight();
         viewLeft = ScreenUtils.dip2px(getContext(), 16);
         mSwitchView.layout(viewLeft, viewTop, viewLeft + mSwitchView.getMeasuredWidth(), viewTop + mSwitchView.getMeasuredHeight());
 
         viewLeft = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 16) - mFlashView.getMeasuredWidth();
         mFlashView.layout(viewLeft, viewTop, viewLeft + mFlashView.getMeasuredWidth(), viewTop + mFlashView.getMeasuredHeight());
 
-        viewTop = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 2);
+        viewTop = mCameraView.getMeasuredHeight() - ScreenUtils.dip2px(getContext(), 2);
         viewLeft = 0;
         mCaptureLayout.layout(viewLeft, viewTop, viewLeft + mCaptureLayout.getMeasuredWidth(), viewTop + mCaptureLayout.getMeasuredHeight());
     }

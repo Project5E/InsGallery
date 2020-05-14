@@ -173,8 +173,8 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
 //        config.isSingleDirectReturn = true;
 //        config.isWithVideoImage = false;
 //        config.maxVideoSelectNum = 1;
-        config.aspect_ratio_x = 1;
-        config.aspect_ratio_y = 1;
+//        config.aspect_ratio_x = 1;
+//        config.aspect_ratio_y = 1;
 //        config.recordVideoMinSecond = 3;
 
         mPictureRecycler = new GalleryViewImpl(getContext());
@@ -268,6 +268,7 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position == 0) {
+                    titleViewBg.setVisibility(View.VISIBLE);
                     if (positionOffset >= 0.5f) {
                         mPreviewContainer.pauseVideo(true);
                     } else {
@@ -280,6 +281,7 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
                 }
                 if (position == 1) {
                     ((PagePhoto) mList.get(1)).setCaptureButtonTranslationX(-positionOffsetPixels);
+                    titleViewBg.setVisibility(View.GONE);
                 } else if (position == 2 && positionOffsetPixels == 0) {
                     ((PagePhoto) mList.get(1)).setCaptureButtonTranslationX(-mInstagramViewPager.getMeasuredWidth());
                 }
