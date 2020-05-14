@@ -246,10 +246,10 @@ public class InstagramCameraView extends FrameLayout {
         mCameraEmptyView.layout(viewLeft, viewTop, viewLeft + mCameraView.getMeasuredWidth(), viewTop + mCameraView.getMeasuredHeight());
 
         viewTop = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 12) - mSwitchView.getMeasuredHeight();
-        viewLeft = ScreenUtils.dip2px(getContext(), 20);
+        viewLeft = ScreenUtils.dip2px(getContext(), 16);
         mSwitchView.layout(viewLeft, viewTop, viewLeft + mSwitchView.getMeasuredWidth(), viewTop + mSwitchView.getMeasuredHeight());
 
-        viewLeft = mSwitchView.getRight() + ScreenUtils.dip2px(getContext(), 20);
+        viewLeft = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 16) - mFlashView.getMeasuredWidth();
         mFlashView.layout(viewLeft, viewTop, viewLeft + mFlashView.getMeasuredWidth(), viewTop + mFlashView.getMeasuredHeight());
 
         viewTop = getMeasuredWidth() - ScreenUtils.dip2px(getContext(), 2);

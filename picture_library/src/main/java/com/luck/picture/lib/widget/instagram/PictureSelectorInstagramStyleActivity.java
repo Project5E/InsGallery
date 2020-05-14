@@ -1202,7 +1202,12 @@ public class PictureSelectorInstagramStyleActivity extends PictureBaseActivity i
 
     @Override
     public void onChange(List<LocalMedia> selectImages) {
-
+        int imagesSize = selectImages.size();
+        if (imagesSize == 0) {
+            mTvPictureRight.setBackgroundResource(R.drawable.picture_instagram_title_bar_right_bg_none);
+        } else {
+            mTvPictureRight.setBackgroundResource(R.drawable.picture_instagram_title_bar_right_bg);
+        }
     }
 
     @Override

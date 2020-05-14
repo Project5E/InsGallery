@@ -40,7 +40,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="6dp"
-        android:background="@drawable/picture_instagram_title_bar_right_bg"
+        android:background="@drawable/picture_instagram_title_bar_right_bg_none"
         android:gravity="center"
         android:text="@string/picture_cancel"
         android:textColor="?picture.right.textColor"

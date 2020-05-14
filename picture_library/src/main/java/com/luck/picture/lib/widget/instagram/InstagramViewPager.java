@@ -314,7 +314,7 @@ public class InstagramViewPager extends FrameLayout {
         int position = (int) (Math.abs(scrollHorizontalPosition) / getMeasuredWidth());
         float offset = Math.abs(scrollHorizontalPosition) % getMeasuredWidth();
 
-        mTabLayout.setIndicatorPosition(position, offset / getMeasuredWidth());
+        mTabLayout.setShortIndicatorPosition(position);
 
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageScrolled(position, offset / getMeasuredWidth(), (int) offset);
