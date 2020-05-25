@@ -9,7 +9,8 @@ import com.luck.picture.lib.camera.CustomCameraView;
 import com.luck.picture.lib.engine.CacheResourcesEngine;
 import com.luck.picture.lib.engine.ImageEngine;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnPictureSelectorInterfaceListener;
+import com.luck.picture.lib.instagram.InstagramSelectionConfig;
+import com.luck.picture.lib.listener.OnCustomCameraInterfaceListener;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.listener.OnVideoSelectedPlayCallback;
 import com.luck.picture.lib.style.PictureCropParameterStyle;
@@ -35,6 +36,7 @@ public final class PictureSelectionConfig implements Parcelable {
     public PictureParameterStyle style;
     public PictureCropParameterStyle cropStyle;
     public PictureWindowAnimationStyle windowAnimationStyle;
+    public InstagramSelectionConfig instagramSelectionConfig;
     public String compressSavePath;
     public String suffixType;
     public boolean focusAlpha;
@@ -65,12 +67,11 @@ public final class PictureSelectionConfig implements Parcelable {
     public int cropWidth;
     public int cropHeight;
     public int compressQuality;
-    public int filterFileSize;
+    public float filterFileSize;
     public int language;
     public boolean isMultipleRecyclerAnimation;
     public boolean isMultipleSkipCrop;
     public boolean isWeChatStyle;
-    public boolean isInstagramStyle;
     public boolean isUseCustomCamera;
     public boolean zoomAnim;
     public boolean isCompress;
@@ -106,7 +107,7 @@ public final class PictureSelectionConfig implements Parcelable {
     public static CacheResourcesEngine cacheResourcesEngine;
     public static OnResultCallbackListener listener;
     public static OnVideoSelectedPlayCallback customVideoPlayCallback;
-    public static OnPictureSelectorInterfaceListener onPictureSelectorInterfaceListener;
+    public static OnCustomCameraInterfaceListener onCustomCameraInterfaceListener;
     public List<LocalMedia> selectionMedias;
     public String cameraFileName;
     public boolean isCheckOriginalImage;
@@ -140,6 +141,17 @@ public final class PictureSelectionConfig implements Parcelable {
 
     public String originalPath;
     public String cameraPath;
+    public int cameraMimeType;
+    public int pageSize;
+    public boolean isPageStrategy;
+    public boolean isFilterInvalidFile;
+    public boolean isMaxSelectEnabledMask;
+    public int animationMode;
+    public boolean isAutomaticTitleRecyclerTop;
+    public boolean isCallbackMode;
+    public boolean isAndroidQChangeWH;
+    public boolean isAndroidQChangeVideoWH;
+    public boolean isQuickCapture;
     /**
      * 内测专用###########
      */
@@ -154,7 +166,7 @@ public final class PictureSelectionConfig implements Parcelable {
         selectionMode = PictureConfig.MULTIPLE;
         maxSelectNum = 9;
         minSelectNum = 0;
-        maxVideoSelectNum = 1;
+        maxVideoSelectNum = 0;
         minVideoSelectNum = 0;
         videoQuality = 1;
         language = -1;
@@ -194,7 +206,6 @@ public final class PictureSelectionConfig implements Parcelable {
         isFallbackVersion3 = true;
         enableCrop = false;
         isWeChatStyle = false;
-        isInstagramStyle = false;
         isUseCustomCamera = false;
         isMultipleSkipCrop = true;
         isMultipleRecyclerAnimation = true;
@@ -220,11 +231,6 @@ public final class PictureSelectionConfig implements Parcelable {
         renameCompressFileName = "";
         renameCropFileName = "";
         selectionMedias = new ArrayList<>();
-        imageEngine = null;
-        listener = null;
-        cacheResourcesEngine = null;
-        customVideoPlayCallback = null;
-        onPictureSelectorInterfaceListener = null;
         uCropOptions = null;
         style = null;
         cropStyle = null;
@@ -245,6 +251,18 @@ public final class PictureSelectionConfig implements Parcelable {
         overrideHeight = 0;
         originalPath = "";
         cameraPath = "";
+        instagramSelectionConfig = null;
+        cameraMimeType = -1;
+        pageSize = PictureConfig.MAX_PAGE_SIZE;
+        isPageStrategy = true;
+        isFilterInvalidFile = false;
+        isMaxSelectEnabledMask = false;
+        animationMode = -1;
+        isAutomaticTitleRecyclerTop = true;
+        isCallbackMode = false;
+        isAndroidQChangeWH = true;
+        isAndroidQChangeVideoWH = false;
+        isQuickCapture = true;
     }
 
     public static PictureSelectionConfig getInstance() {
@@ -264,6 +282,17 @@ public final class PictureSelectionConfig implements Parcelable {
     public PictureSelectionConfig() {
     }
 
+    /**
+     * 释放监听器
+     */
+    public static void destroy() {
+        PictureSelectionConfig.listener = null;
+        PictureSelectionConfig.customVideoPlayCallback = null;
+        PictureSelectionConfig.onCustomCameraInterfaceListener = null;
+        PictureSelectionConfig.onCustomCameraInterfaceListener = null;
+        PictureSelectionConfig.cacheResourcesEngine = null;
+    }
+
 
     @Override
     public int describeContents() {
@@ -278,6 +307,7 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeParcelable(this.style, flags);
         dest.writeParcelable(this.cropStyle, flags);
         dest.writeParcelable(this.windowAnimationStyle, flags);
+        dest.writeParcelable(this.instagramSelectionConfig, flags);
         dest.writeString(this.compressSavePath);
         dest.writeString(this.suffixType);
         dest.writeByte(this.focusAlpha ? (byte) 1 : (byte) 0);
@@ -307,12 +337,11 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeInt(this.cropWidth);
         dest.writeInt(this.cropHeight);
         dest.writeInt(this.compressQuality);
-        dest.writeInt(this.filterFileSize);
+        dest.writeFloat(this.filterFileSize);
         dest.writeInt(this.language);
         dest.writeByte(this.isMultipleRecyclerAnimation ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isMultipleSkipCrop ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isWeChatStyle ? (byte) 1 : (byte) 0);
-        dest.writeByte(this.isInstagramStyle ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isUseCustomCamera ? (byte) 1 : (byte) 0);
         dest.writeByte(this.zoomAnim ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isCompress ? (byte) 1 : (byte) 0);
@@ -361,6 +390,17 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeString(this.outPutCameraPath);
         dest.writeString(this.originalPath);
         dest.writeString(this.cameraPath);
+        dest.writeInt(this.cameraMimeType);
+        dest.writeInt(this.pageSize);
+        dest.writeByte(this.isPageStrategy ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isFilterInvalidFile ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isMaxSelectEnabledMask ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.animationMode);
+        dest.writeByte(this.isAutomaticTitleRecyclerTop ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isCallbackMode ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isAndroidQChangeWH ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isAndroidQChangeVideoWH ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isQuickCapture ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isFallbackVersion ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isFallbackVersion2 ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isFallbackVersion3 ? (byte) 1 : (byte) 0);
@@ -373,6 +413,7 @@ public final class PictureSelectionConfig implements Parcelable {
         this.style = in.readParcelable(PictureParameterStyle.class.getClassLoader());
         this.cropStyle = in.readParcelable(PictureCropParameterStyle.class.getClassLoader());
         this.windowAnimationStyle = in.readParcelable(PictureWindowAnimationStyle.class.getClassLoader());
+        this.instagramSelectionConfig = in.readParcelable(InstagramSelectionConfig.class.getClassLoader());
         this.compressSavePath = in.readString();
         this.suffixType = in.readString();
         this.focusAlpha = in.readByte() != 0;
@@ -402,12 +443,11 @@ public final class PictureSelectionConfig implements Parcelable {
         this.cropWidth = in.readInt();
         this.cropHeight = in.readInt();
         this.compressQuality = in.readInt();
-        this.filterFileSize = in.readInt();
+        this.filterFileSize = in.readFloat();
         this.language = in.readInt();
         this.isMultipleRecyclerAnimation = in.readByte() != 0;
         this.isMultipleSkipCrop = in.readByte() != 0;
         this.isWeChatStyle = in.readByte() != 0;
-        this.isInstagramStyle = in.readByte() != 0;
         this.isUseCustomCamera = in.readByte() != 0;
         this.zoomAnim = in.readByte() != 0;
         this.isCompress = in.readByte() != 0;
@@ -456,6 +496,17 @@ public final class PictureSelectionConfig implements Parcelable {
         this.outPutCameraPath = in.readString();
         this.originalPath = in.readString();
         this.cameraPath = in.readString();
+        this.cameraMimeType = in.readInt();
+        this.pageSize = in.readInt();
+        this.isPageStrategy = in.readByte() != 0;
+        this.isFilterInvalidFile = in.readByte() != 0;
+        this.isMaxSelectEnabledMask = in.readByte() != 0;
+        this.animationMode = in.readInt();
+        this.isAutomaticTitleRecyclerTop = in.readByte() != 0;
+        this.isCallbackMode = in.readByte() != 0;
+        this.isAndroidQChangeWH = in.readByte() != 0;
+        this.isAndroidQChangeVideoWH = in.readByte() != 0;
+        this.isQuickCapture = in.readByte() != 0;
         this.isFallbackVersion = in.readByte() != 0;
         this.isFallbackVersion2 = in.readByte() != 0;
         this.isFallbackVersion3 = in.readByte() != 0;
