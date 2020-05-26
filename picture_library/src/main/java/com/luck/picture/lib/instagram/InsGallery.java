@@ -112,7 +112,7 @@ public final class InsGallery {
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
                 .isEnableCrop(false)// 是否裁剪
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
-                .isCompress(false)// 是否压缩
+                .isCompress(true)// 是否压缩
                 //.compressQuality(80)// 图片压缩后输出质量 0~ 100
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步
                 //.queryMaxFileSize(10)// 只查多少M以内的图片、视频、音频  单位M
@@ -120,7 +120,7 @@ public final class InsGallery {
                 .withAspectRatio(3, 4)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
                 .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
                 .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
-                .isOpenClickSound(true)// 是否开启点击声音
+                .isOpenClickSound(false)// 是否开启点击声音
                 //.isDragFrame(false)// 是否可拖动裁剪框(固定)
                 //.videoMinSecond(10)
                 .videoMaxSecond(120)

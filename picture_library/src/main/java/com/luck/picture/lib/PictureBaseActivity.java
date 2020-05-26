@@ -847,7 +847,9 @@ public abstract class PictureBaseActivity extends AppCompatActivity {
      * Close Activity
      */
     protected void closeActivity() {
-        finish();
+        if (config.instagramSelectionConfig == null) {
+            finish();
+        }
         if (config.camera) {
             overridePendingTransition(0, R.anim.picture_anim_fade_out);
         } else {
