@@ -184,7 +184,7 @@ public final class InsGallery {
         if (currentTheme == THEME_STYLE_DARK) {
             mPictureParameterStyle.pictureRightDefaultTextColor = ContextCompat.getColor(context, R.color.picture_color_white);
         } else if (currentTheme == THEME_STYLE_DARK_BLUE) {
-            mPictureParameterStyle.pictureRightDefaultTextColor = Color.parseColor("#2FA6FF");
+            mPictureParameterStyle.pictureRightDefaultTextColor = Color.parseColor("#FFDE3C");
         } else {
             mPictureParameterStyle.pictureRightDefaultTextColor = ContextCompat.getColor(context, R.color.picture_color_333333);
         }
